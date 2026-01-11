@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>VGC Pet Adoption</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
+
+body{
+    background:linear-gradient(to bottom,#ffe6f0,#ffffff);
+    overflow-x:hidden;
+}
+
+/* Falling Flowers Animation */
+.flowers span{
+    position:fixed;
+    top:-10%;
+    font-size:24px;
+    animation:fall linear infinite;
+    opacity:.8;
+    pointer-events:none;
+}
+@keyframes fall{
+    to{transform:translateY(110vh) rotate(360deg);}
+}
+.flowers span:nth-child(1){left:5%;animation-duration:8s}
+.flowers span:nth-child(2){left:15%;animation-duration:10s}
+.flowers span:nth-child(3){left:25%;animation-duration:9s}
+.flowers span:nth-child(4){left:35%;animation-duration:11s}
+.flowers span:nth-child(5){left:45%;animation-duration:8s}
+.flowers span:nth-child(6){left:55%;animation-duration:10s}
+.flowers span:nth-child(7){left:65%;animation-duration:9s}
+.flowers span:nth-child(8){left:75%;animation-duration:11s}
+.flowers span:nth-child(9){left:85%;animation-duration:8s}
+.flowers span:nth-child(10){left:95%;animation-duration:10s}
+
+/* Header */
+header{
+    background:#fff;
+    padding:15px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    position:sticky;
+    top:0;
+    z-index:100;
+}
+header h1{color:#ff2f92;font-size:20px}
+nav a{
+    margin-left:15px;
+    text-decoration:none;
+    color:#ff2f92;
+    font-weight:bold;
+}
+
+/* Title */
+.title{
+    text-align:center;
+    padding:40px 15px;
+}
+.title h2{color:#ff2f92;font-size:30px}
+.title p{color:#555;margin-top:10px}
+
+/* Pets Grid */
+.pets{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:20px;
+    padding:20px;
+}
+.card{
+    background:#fff;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 10px 25px rgba(255,47,146,.25);
+    text-align:center;
+}
+.card img{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+}
+.tag{
+    display:inline-block;
+    background:#ff6fb5;
+    color:#fff;
+    padding:6px 16px;
+    border-radius:20px;
+    margin-top:10px;
+    font-size:13px;
+}
+.card h3{margin:10px 0}
+.card p{font-size:14px;color:#666;padding:0 10px}
+.card button{
+    margin:15px;
+    padding:10px 25px;
+    border:none;
+    border-radius:20px;
+    background:#ff2f92;
+    color:#fff;
+    cursor:pointer;
+}
+.card button:hover{background:#e02680}
+
+/* Adoption Form Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: none; 
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+.modal-content {
+    background: #fff;
+    padding: 30px;
+    border-radius: 20px;
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+.modal-content h2 { color: #ff2f92; margin-bottom: 15px; }
+.modal-content input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
+.close-btn {
+    position: absolute;
+    top: 10px; right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #ff2f92;
+}
+.submit-btn {
+    width: 100%;
+    padding: 12px;
+    background: #ff2f92;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+/* Footer */
+footer{
+    background:#fff0f7;
+    text-align:center;
+    padding:30px 15px;
+    margin-top:30px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="flowers">
+    <span>&#127800;</span><span>&#127802;</span><span>&#127804;</span><span>&#127800;</span><span>&#127802;</span>
+    <span>&#127804;</span><span>&#127800;</span><span>&#127802;</span><span>&#127804;</span><span>&#127800;</span>
+</div>
+
+<header>
+    <h1>&#127800; VGC Pet Adoption</h1>
+    <nav>
+        <a href="#">Home</a>
+        <a href="#">Pets</a>
+        <a href="#">Contact</a>
+    </nav>
+</header>
+
+<section class="title">
+    <h2>Available Pets</h2>
+    <p>Pet Adoption Center by VGC Mandi PGDCA Department</p>
+</section>
+
+<div class="modal-overlay" id="adoptionModal">
+    <div class="modal-content">
+        <span class="close-btn" id="closeModal">&times;</span>
+        <h2>Adoption Form</h2>
+        <p id="petNameTitle" style="font-weight: bold; color: #555; margin-bottom: 10px;"></p>
+        
+        <form action="https://formspree.io/f/xykkgodj" method="POST" id="formContent">
+            <input type="text" name="Applicant Name" placeholder="Your Full Name" required>
+            <input type="email" name="Email" placeholder="Email Address" required>
+            <input type="tel" name="Phone" placeholder="Phone Number" required>
+            <input type="text" name="City" placeholder="Your City" required>
+            
+            <input type="hidden" name="Pet Name" id="hiddenPetName">
+            
+            <button type="submit" class="submit-btn">Submit Application</button>
+        </form>
+    </div>
+</div>
+
+<section class="pets">
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1" alt="Beagle Puppy">
+        <span class="tag">Beagle Puppy</span>
+        <h3>Max</h3>
+        <p>2 years old &bull; Friendly &bull; Great with kids</p>
+        <button class="adopt-trigger" data-name="Max">Adopt Max</button>
+    </div>
+
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1530281700549-e82e7bf110d6" alt="Mixed Breed Puppy">
+        <span class="tag">Mixed Breed Puppy</span>
+        <h3>Buddy</h3>
+        <p>6 months old &bull; Energetic &bull; Intelligent</p>
+        <button class="adopt-trigger" data-name="Buddy">Adopt Buddy</button>
+    </div>
+
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1518791841217-8f162f1e1131" alt="Tabby Cat">
+        <span class="tag">Tabby Cat</span>
+        <h3>Luna</h3>
+        <p>1 year old &bull; Calm &bull; Apartment friendly</p>
+        <button class="adopt-trigger" data-name="Luna">Adopt Luna</button>
+    </div>
+
+    <div class="card">
+        <img src="https://images.unsplash.com/photo-1576201836106-db1758fd1c97" alt="Golden Retriever">
+        <span class="tag">Golden Retriever</span>
+        <h3>Rocky</h3>
+        <p>8 years old &bull; Gentle &bull; Loyal companion</p>
+        <button class="adopt-trigger" data-name="Rocky">Adopt Rocky</button>
+    </div>
+</section>
+
+<footer>
+    <h3>&#127872; PGDCA Project</h3>
+    <p><strong>Humanshu Chauhan</strong></p>
+    <p>&#127800; Vallabh Government College Mandi &#127800;</p>
+    <p>&#128222; +91 85447 93060</p>
+    <p>&#128231; riyachauhan93060@gmail.com</p>
+    <p>&#128205; VGC Mandi, Himachal Pradesh</p>
+    <p style="font-size:12px;opacity:0.6;">Developed by Vivek</p>
+</footer>
+
+<script>
+    const modal = document.getElementById('adoptionModal');
+    const closeBtn = document.getElementById('closeModal');
+    const triggers = document.querySelectorAll('.adopt-trigger');
+    const petTitle = document.getElementById('petNameTitle');
+    const hiddenPetInput = document.getElementById('hiddenPetName');
+
+    triggers.forEach(button => {
+        button.addEventListener('click', () => {
+            const petName = button.getAttribute('data-name');
+            petTitle.innerText = "Applying for: " + petName;
+            hiddenPetInput.value = petName; 
+            modal.style.display = 'flex';
+        });
+    });
+
+    closeBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+
+    window.addEventListener('click', (e) => {
+        if (e.target == modal) {
+            modal.style.display = 'none';
+        }
+    });
+</script>
+
+</body>
+</html>
